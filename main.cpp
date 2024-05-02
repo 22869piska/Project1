@@ -1,63 +1,65 @@
-#include <SFML/Graphics.hpp>
+#include<SFML/Graphics.hpp>
 #include<SFML/Audio.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Network.hpp>
-#include <SFML/System.hpp>
-#include"van.cpp"
-#include"platform.cpp"
-
-
-
-
-
-
-
-//
-/// /////
-//
-using namespace std;
+#include<SFML/Network.hpp>
+#include<SFML/System.hpp>
+#include"hero.cpp"
 using namespace sf;
-int main()
-{
-	sf::RenderWindow window(sf::VideoMode(1080,800), "GYM");
-	window.setFramerateLimit(61);
-	
-	//image/van.jpg
-	
+using namespace std;
 
 
-	//
-	//Clock clock;
+
+
+
+int main(){
+	/////
 	
-	Clock clock;
+
 	vansama van;
-	svaston svast;
+
+	Clock clock;
+	
+	RenderWindow window(VideoMode(1080, 800), "GYM");
+	
+//////
 	while (window.isOpen())
 	{
-		
+		window.setFramerateLimit(60);
 		float time = clock.getElapsedTime().asMicroseconds();
 		clock.restart();
-		time = time / 600;
+		time = time / 900;
+		///////////////////////////////////////////////////////
 		van.frame(time);
-		//
-		if (Keyboard::isKeyPressed(Keyboard::W)) {
 
-			van.side = 1;
-			van.frame(time);
-			van.side = 0;
-		}
-		if (Keyboard::isKeyPressed(Keyboard::D)) {
+
+		if (!Keyboard::isKeyPressed(Keyboard::D))
+		{
 			
-			van.side = 3;
-			van.frame(time);
-			van.side = 0;
-		}
-		if (Keyboard::isKeyPressed(Keyboard::A)) {
+			if (van.xup > 0)
+			{
+			
+				van.xup -= 0.2;
+				if (van.xup<0) {
+					van.xup = 0;
+				}
+			}
+	    }
+		if (!Keyboard::isKeyPressed(Keyboard::A))
+		{
 
-			van.side = 2;
-			van.frame(time);
-			van.side = 0;
+			if (van.yup < 0)
+			{
+
+				van.yup += 0.2;
+				if (van.yup > 0) {
+					van.yup = 0;
+				}
+			}
 		}
+		if (Keyboard::isKeyPressed(Keyboard::Space)) { van.spr.setPosition(400, 700); }//setpos
+		if (Keyboard::isKeyPressed(Keyboard::D)) { van.side = 1; van.xup += 0.1; }
+		if (Keyboard::isKeyPressed(Keyboard::A)) { van.side = 2; ; van.yup -= 0.1;
+		}
+		if (Keyboard::isKeyPressed(Keyboard::W)) { van.side = 3; }
 
 
 
@@ -67,38 +69,35 @@ int main()
 
 
 		sf::Event event;
-		//
-		while (window.pollEvent(event))//
-		{//
+		while (window.pollEvent(event))
+		{
 			if (event.type == sf::Event::Closed)
 				window.close();
-		}//
-		//------------------------------------
+		}
 
 
+		///////////////////////////////////////////Управление персонажем с анимацией////////////////////////////////////////////////////////////////////////
 	
-		
-	
-
-
-		
-		
-		window.clear();/////////////////////////////////CHISTKA///////////////////////////////////////
-		
-		//
-		
-		
 
 		
 			
-		svast.genersvast();
-		//govno gener;//
-		window.draw(van.herospr);
-		window.draw(svast.svastspr);
-		//
-		window.display();
-		//---------------------------------
-	}
 	
-	return 0;
+
+
+		window.clear();
+		window.draw(van.spr);
+	
+
+
+		
+		window.display();
+	}
+
+
+
+
+
+
+
+
 }
